@@ -4,6 +4,7 @@ import requests
 from datetime import datetime
 from openpyxl.styles import PatternFill, Font
 import math
+import sys
 
 API = "https://api.baubuddy.de/dev/index.php/v1/vehicles/select/active"
 COLOR_API = "https://api.baubuddy.de/dev/index.php/v1/labels/"
@@ -170,9 +171,13 @@ if c:
     ws = wb[sheet_name_api]
 
     #coloring each row of based on the "hu" value in it
-    for (row, i) in zip(ws.iter_rows(min_row=2, max_col=len(data.columns), max_row=len(data) + 1), range(len(final_date_values))):
+    for (row, i, j) in zip(ws.iter_rows(min_row=2, max_col=len(data.columns), max_row=len(data) + 1), range(len(final_date_values)), range(len(color_codes))):
         for cell in row:
             cell.fill = PatternFill("solid", start_color=apply_color(final_date_values[i]))
+            if color_codes[i] == "":
+                pass
+            else:
+                cell.font = Font(color=f"{color_codes[j]}")
 
 
     # laoding a workbook and getting the needed worksheet
@@ -184,7 +189,7 @@ if c:
             if vehicle_color_codes[i] == "":
                 pass
             else:
-                cell.font = Font(color=f"{vehicle_color_codes[i]}", italic=True)
+                cell.font = Font(color=f"{vehicle_color_codes[i]}")
 
     #finally saving the excel file
     wb.save(f"vehicles_{current_date_iso_formatted}.xlsx")

@@ -11,3 +11,11 @@ import pandas
 data = pandas.read_csv('vehicles.csv', delimiter=";")
 print(data)
 
+
+import sys
+keys = sys.argv[0]
+colored = sys.argv[1]
+
+print(keys)
+print(colored)
+
