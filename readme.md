@@ -10,7 +10,7 @@
 - Make sure the **imports are correct**
 - The program is run via **Command Line** or **Terminal**
 
-If you want to see all data from all columns just pass **'all'** as keyword.
+If you want to print in the Excel file all data from all columns just pass **'all'** as keyword.
 Like this:
 
 `py main.py -k "all" -c True`
