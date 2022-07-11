@@ -1,16 +1,38 @@
-# The solution of the VERO Digital Solutions's Python task
+# The Solution of the VERO Digital Solutions's Python Task
 
-This is purely my understanding of the task, so I know that there might be mistakes in it
+---
 
-## Packages to be installed
+## How to run the program?
 
-- pandas
-- requests
-- openpyxl
+- Make sure you are in the **right project folder**
+- Make sure you have a **Python interpreter installed**
+- Make sure you have **all needed packages installed**
+- Make sure the **imports are correct**
+- The program is run via **Command Line** or **Terminal**
 
-## How to install the packages
+If you want to see all data from all columns just pass **'all'** as keyword.
+Like this:
 
-- pip install pandas
-- pip install requests
-- pip install openpyxl
+`py main.py -k "all" -c True`
+
+### Sidenotes:
+ - Columns **rnr** and **gruppe**, that we get in the data from the API, **will always be printed**, because of the task's requirements.
+ - While entering the **-k arguments**, place them in a **" "** quote and **separate them with spaces**.
+
+---
+
+## Sample test:
+
+`py main.py -k "info kurzname hu" -c True`
+
+## Output:
+
+The program will create an Excel file name **vehicles_{current_date_iso_formatted}.xlsx**
+
+#### Its output:
+
+![image info](./images/samp-output1.png)
+
+![image info](./images/samp-output2.png)
+
 

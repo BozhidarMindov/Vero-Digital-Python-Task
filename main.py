@@ -45,57 +45,24 @@ args = parser.parse_args()
 
 k = args.keys.lower()
 additional_column_names = k.split(" ")
+
+#if the user wants all columns printed, they could just use keywword "all"
 if "all" in additional_column_names:
     additional_column_names = keys
 
+#if the user has entered some invalid input the program breaks
 for name in additional_column_names:
     if name not in keys:
         print("You have entered invalid input!")
         exit()
 
 
-print(additional_column_names)
-
-
-#converting from string to bool, because python has a problerm deeling with commnand line booleans
+#converting from string to bool, because python has a problerm dealing with command line booleans (and booleans in general)
 c = args.colored.lower()
-print(c)
-
-
-# additional_column_names = []
-# while True:
-#     k = input("Pass the names of the additional columns you want to print (Type 'ALL' to print all columns. "
-#               "Type 'STOP' to end): ").lower()
-#     #if the user types stop the loop breaks
-#     if k == "stop":
-#         break
-#
-#     if k == "all":
-#         additional_column_names = keys
-#         print("All data columns will be printed!")
-#         break
-#
-#     #if 'k' is already in the list of columns to be displayed, the last input is skipped
-#     if k in additional_column_names:
-#         print("You already requested that. Try again!")
-#
-#     # if the user types some invalid input, they will be notified and prompted to type again
-#     elif k not in keys:
-#         print("Inavid input. Try again!")
-#
-#     #the value is added to the list of additional columns
-#     #That is when the input is valid and the value is not already in the list of additional columns
-#     else:
-#         additional_column_names.append(k)
-#         print("Successfully added column")
-#
-# #asking if the user if the columns in the excel fil should be colored
-# c = bool()
-# color_input = input("Do you want the table to be colored. Type 'yes' or  'no'.(Value is defaulted to true): ").lower()
-# if color_input == "no":
-#     c = False
-# else:
-#     c = True
+if c == "false":
+    c = False
+else:
+    c = True
 
 
 #creating a list of columns that would later be placed in the xlsx file
@@ -113,6 +80,7 @@ else:
 for item in filtered_response[0]:
     if item.lower() in additional_column_names:
         columns_to_print.append(item)
+
 
 
 #getting the current date and iso-formating it
@@ -147,14 +115,17 @@ for date in new_date_values:
     final_date_values.append(int(today_date) - int(new_date_value))
 
 
-#function that is used to determine the color of each row in the table for teh API data
+#function that is used to determine the color of each row in the table for the API data
 def apply_color(value) -> str:
     color_fill = str()
-    if value < 300:
+    #we converted the dates to integers and subtracted the current from the "hu" date
+    #now we assign a color value base on the outcome of the subtraction
+
+    if value < 300: #less that 3 months
         color_fill = "007500"
-    elif value < 10000:
+    elif value < 10000: ## between 3 months and a year
         color_fill = "FFA500"
-    else:
+    else: #more that a year
         color_fill = "b30000"
 
     return color_fill
@@ -193,7 +164,7 @@ with pandas.ExcelWriter(f"vehicles_{current_date_iso_formatted}.xlsx", engine="o
     data_vehicles.to_excel(writer, index= 0, sheet_name=sheet_name_vehicles)
 
 #-------------------Reading from the file and coloring the rows, if the user chose that option--------------------
-if c == "true":
+if c:
     #laoding a workbook and getting the needed worksheet
     wb = openpyxl.load_workbook(f"vehicles_{current_date_iso_formatted}.xlsx")
     ws = wb[sheet_name_api]
@@ -202,13 +173,14 @@ if c == "true":
     for (row, i, j) in zip(ws.iter_rows(min_row=2, max_col=len(data.columns), max_row=len(data) + 1), range(len(final_date_values)), range(len(color_codes))):
         for cell in row:
             cell.fill = PatternFill("solid", start_color=apply_color(final_date_values[i]))
-            if color_codes[i] == "":
-                pass
-            else:
-                cell.font = Font(color=f"{color_codes[j]}")
+            if "labelIds" in columns_to_print:
+                if color_codes[i] == "":
+                    pass
+                else:
+                    cell.font = Font(color=f"{color_codes[j]}")
 
 
-    # laoding a workbook and getting the needed worksheet
+    # getting the needed worksheet for the data from the csv file
     ws2 = wb[sheet_name_vehicles]
 
     #coloring rows where a color code for labelIds is provided and resolved
@@ -221,6 +193,3 @@ if c == "true":
 
     #finally saving the excel file
     wb.save(f"vehicles_{current_date_iso_formatted}.xlsx")
-
-
-
