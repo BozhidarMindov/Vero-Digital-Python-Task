@@ -12,10 +12,14 @@ data = pandas.read_csv('vehicles.csv', delimiter=";")
 print(data)
 
 
-import sys
-keys = sys.argv[0]
-colored = sys.argv[1]
+import argparse
 
-print(keys)
-print(colored)
+parser = argparse.ArgumentParser()
+
+parser.add_argument('-k', '--keys', type=str, required=True)
+parser.add_argument('-c', '--colored', type=bool, default=True)
+
+args = parser.parse_args()
+k = args.x
+c = args.y
 

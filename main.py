@@ -1,10 +1,11 @@
-import openpyxl
 import pandas
 import requests
-from datetime import datetime
+import openpyxl
 from openpyxl.styles import PatternFill, Font
+from datetime import datetime
 import math
-import sys
+import argparse
+
 
 API = "https://api.baubuddy.de/dev/index.php/v1/vehicles/select/active"
 COLOR_API = "https://api.baubuddy.de/dev/index.php/v1/labels/"
@@ -34,40 +35,61 @@ keys = [key.lower() for key in filtered_response[0]]
 
 
 #asking for the names of additional columns to be printed
-additional_column_names = []
-while True:
-    k = input("Pass the names of the additional columns you want to print (Type 'ALL' to print all columns. "
-              "Type 'STOP' to end): ").lower()
-    #if the user types stop the loop breaks
-    if k == "stop":
-        break
 
-    if k == "all":
-        additional_column_names = keys
-        print("All data columns will be printed!")
-        break
+parser = argparse.ArgumentParser(description="Enter as many keys as you would like")
 
-    #if 'k' is already in the list of columns to be displayed, the last input is skipped
-    if k in additional_column_names:
-        print("You already requested that. Try again!")
+parser.add_argument('-k', '--keys', type=str, required=True, help = "Keys")
+parser.add_argument('-c', '--colored', default = "True")
 
-    # if the user types some invalid input, they will be notified and prompted to type again
-    elif k not in keys:
-        print("Inavid input. Try again!")
+args = parser.parse_args()
+k = args.keys.lower()
 
-    #the value is added to the list of additional columns
-    #That is when the input is valid and the value is not already in the list of additional columns
-    else:
-        additional_column_names.append(k)
-        print("Successfully added column")
+#converting from string to bool, because python has a problerm deeling with commnand line booleans
+c = args.colored.lower()
+print(c)
 
-#asking if the user if the columns in the excel fil should be colored
-c = bool()
-color_input = input("Do you want the table to be colored. Type 'yes' or  'no'.(Value is defaulted to true): ").lower()
-if color_input == "no":
-    c = False
-else:
-    c = True
+
+additional_column_names = k.split(" ")
+if "all" in additional_column_names:
+    additional_column_names = keys
+
+
+print(additional_column_names)
+
+# additional_column_names = []
+# while True:
+#     k = input("Pass the names of the additional columns you want to print (Type 'ALL' to print all columns. "
+#               "Type 'STOP' to end): ").lower()
+#     #if the user types stop the loop breaks
+#     if k == "stop":
+#         break
+#
+#     if k == "all":
+#         additional_column_names = keys
+#         print("All data columns will be printed!")
+#         break
+#
+#     #if 'k' is already in the list of columns to be displayed, the last input is skipped
+#     if k in additional_column_names:
+#         print("You already requested that. Try again!")
+#
+#     # if the user types some invalid input, they will be notified and prompted to type again
+#     elif k not in keys:
+#         print("Inavid input. Try again!")
+#
+#     #the value is added to the list of additional columns
+#     #That is when the input is valid and the value is not already in the list of additional columns
+#     else:
+#         additional_column_names.append(k)
+#         print("Successfully added column")
+#
+# #asking if the user if the columns in the excel fil should be colored
+# c = bool()
+# color_input = input("Do you want the table to be colored. Type 'yes' or  'no'.(Value is defaulted to true): ").lower()
+# if color_input == "no":
+#     c = False
+# else:
+#     c = True
 
 
 #creating a list of columns that would later be placed in the xlsx file
@@ -165,7 +187,7 @@ with pandas.ExcelWriter(f"vehicles_{current_date_iso_formatted}.xlsx", engine="o
     data_vehicles.to_excel(writer, index= 0, sheet_name=sheet_name_vehicles)
 
 #-------------------Reading from the file and coloring the rows, if the user chose that option--------------------
-if c:
+if c == "true":
     #laoding a workbook and getting the needed worksheet
     wb = openpyxl.load_workbook(f"vehicles_{current_date_iso_formatted}.xlsx")
     ws = wb[sheet_name_api]
