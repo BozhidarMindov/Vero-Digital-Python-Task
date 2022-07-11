@@ -27,7 +27,7 @@ Like this:
 
 ## Output:
 
-The program will create an Excel file name **vehicles_{current_date_iso_formatted}.xlsx**
+The program will create an Excel(xlsx) file.
 
 #### Its output:
 
