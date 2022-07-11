@@ -42,19 +42,25 @@ parser.add_argument('-k', '--keys', type=str, required=True, help = "Keys")
 parser.add_argument('-c', '--colored', default = "True")
 
 args = parser.parse_args()
+
 k = args.keys.lower()
+additional_column_names = k.split(" ")
+if "all" in additional_column_names:
+    additional_column_names = keys
+
+for name in additional_column_names:
+    if name not in keys:
+        print("You have entered invalid input!")
+        exit()
+
+
+print(additional_column_names)
+
 
 #converting from string to bool, because python has a problerm deeling with commnand line booleans
 c = args.colored.lower()
 print(c)
 
-
-additional_column_names = k.split(" ")
-if "all" in additional_column_names:
-    additional_column_names = keys
-
-
-print(additional_column_names)
 
 # additional_column_names = []
 # while True:
