@@ -119,7 +119,7 @@ for date in new_date_values:
 def apply_color(value) -> str:
     color_fill = str()
     #we converted the dates to integers and subtracted the current from the "hu" date
-    #now we assign a color value base on the outcome of the subtraction
+    #now we assign a color value based on the outcome of the subtraction
 
     if value < 300: #less than 3 months
         color_fill = "007500"
