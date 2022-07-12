@@ -121,11 +121,11 @@ def apply_color(value) -> str:
     #we converted the dates to integers and subtracted the current from the "hu" date
     #now we assign a color value base on the outcome of the subtraction
 
-    if value < 300: #less that 3 months
+    if value < 300: #less than 3 months
         color_fill = "007500"
     elif value < 10000: ## between 3 months and a year
         color_fill = "FFA500"
-    else: #more that a year
+    else: #more than a year
         color_fill = "b30000"
 
     return color_fill
