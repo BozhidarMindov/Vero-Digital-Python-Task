@@ -13,7 +13,7 @@
 If you want to see all data from all columns just pass **'all'** as keyword.
 Like this:
 
-`py main.py -k "all" -c True`
+`py main.py -k all -c True`
 
 ### Sidenotes:
  - Columns **rnr** and **gruppe**, that we get in the data from the API, **will always be printed**, because of the task's requirements.
