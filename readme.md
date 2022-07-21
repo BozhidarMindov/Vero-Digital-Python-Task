@@ -10,20 +10,18 @@
 - Make sure the **imports are correct**
 - The program is run via **Command Line** or **Terminal**
 
-If you want to print in the Excel file all data from all columns just pass **'all'** as keyword.
+If you want to see all data from all columns just pass **'all'** as keyword.
 Like this:
 
 `py main.py -k "all" -c True`
 
 ### Sidenotes:
  - Columns **rnr** and **gruppe**, that we get in the data from the API, **will always be printed**, because of the task's requirements.
- - While entering the **-k arguments**, place them in a **" "** quote and **separate them with spaces**.
-
 ---
 
 ## Sample test:
 
-`py main.py -k "info kurzname hu" -c True`
+`py main.py -k info kurzname hu -c True`
 
 ## Output:
 
